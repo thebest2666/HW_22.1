@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "home-work-22-1"
+version = "0.1.0"
+description = ""
+authors = ["alexander anciferov <sania.antsiferoff@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "home_work_22"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1.2"
+psycopg2 = "^2.9.9"
+pytils = "^0.4.1"
+pillow = "^10.4.0"
+ipython = "^8.28.0"
+black = "^24.10.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
