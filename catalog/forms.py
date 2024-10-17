@@ -14,9 +14,9 @@ class StyleMixin:
                 fild.widget.attrs["class"] = "form-control"
 
 
-class ProductForm(ModelForm):
+class ProductForm(StyleMixin, ModelForm):
 
-    class Meta(ModelForm):
+    class Meta:
         model = Product
         fields = (
             "name",
@@ -44,8 +44,8 @@ class ProductForm(ModelForm):
         return description
 
 
-class VersionForm(ModelForm):
+class VersionForm(StyleMixin, ModelForm):
 
-    class Meta(ModelForm):
+    class Meta:
         model = Version
         fields = "__all__"
