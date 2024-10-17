@@ -20,6 +20,7 @@ class ProductForm(ModelForm):
         model = Product
         fields = (
             "name",
+            "category",
             "description",
             "photo",
             "is_published",
@@ -33,6 +34,14 @@ class ProductForm(ModelForm):
         if name in forbidden_words:
             raise ValidationError("Нельзя создавать продукты с запрещенными словами в названии")
         return name
+
+
+    def clean_description(self):
+        description = self.cleaned_data['description']
+        forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+        if description in forbidden_words:
+            raise ValidationError("Нельзя создавать продукты с запрещенными словами в описании продукта")
+        return description
 
 
 class VersionForm(ModelForm):
