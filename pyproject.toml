@@ -8,12 +8,14 @@ packages = [{include = "home_work_22"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-django = "^5.1.2"
 psycopg2 = "^2.9.9"
 pytils = "^0.4.1"
 pillow = "^10.4.0"
 ipython = "^8.28.0"
 black = "^24.10.0"
+django-phonenumber-field = {extras = ["phonenumberslite"], version = "^8.0.0"}
+django-countries = "^7.6.1"
+django = "4.2.2"
 
 
 [build-system]

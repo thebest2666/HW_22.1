@@ -1,3 +1,6 @@
+from itertools import product
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -15,7 +18,8 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 
 
-class CatalogCreateView(CreateView):
+class CatalogCreateView(LoginRequiredMixin, CreateView):
+    login_url = reverse_lazy('users:login')
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product")
@@ -32,6 +36,11 @@ class CatalogCreateView(CreateView):
         return context_data
 
     def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.creator = user
+        product.save()
+
         context_data = self.get_context_data()
         formset = context_data["formset"]
         if form.is_valid() and formset.is_valid():
@@ -45,7 +54,8 @@ class CatalogCreateView(CreateView):
             )
 
 
-class CatalogUpdateView(UpdateView):
+class CatalogUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = reverse_lazy('users:login')
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:product")
@@ -108,7 +118,8 @@ class CatalogDetailView(DetailView):
         return self.object
 
 
-class CatalogDeleteView(DeleteView):
+class CatalogDeleteView(LoginRequiredMixin, DeleteView):
+    login_url = reverse_lazy('users:login')
     model = Product
     success_url = reverse_lazy("catalog:product")
 
