@@ -4,6 +4,9 @@
         <div class="col-sm-8 col-md-7 py-4">
           <h4>Мир цифровой техники</h4>
           <p class="text-body-secondary">В нашем магазине огромный выбор цифровой техники</p>
+          {% if user.is_authenticated %}
+          <p class="text-secondary"><small>Вы вошли как: </small><span class="badge text-bg-secondary">{{ user }}</span></p>
+          {% endif %}
         </div>
         <div class="col-sm-4 offset-md-1 py-4">
           <h4>Навигация</h4>

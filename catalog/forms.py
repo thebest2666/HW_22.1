@@ -15,7 +15,6 @@ class StyleMixin:
 
 
 class ProductForm(StyleMixin, ModelForm):
-
     class Meta:
         model = Product
         fields = (
@@ -44,8 +43,17 @@ class ProductForm(StyleMixin, ModelForm):
         return description
 
 
-class VersionForm(StyleMixin, ModelForm):
+class ProductModeratorForm(StyleMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = (
+            "description",
+            "is_published",
+            "category"
+        )
 
+
+class VersionForm(StyleMixin, ModelForm):
     class Meta:
         model = Version
         fields = "__all__"

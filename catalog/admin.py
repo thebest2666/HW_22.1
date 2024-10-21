@@ -4,11 +4,11 @@ from catalog.models import Product, Category, Version
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "price", "category", "creator")
+    list_display = ("name", "description", "category", "creator", "is_published", "price")
     list_filter = ("category",)
     search_fields = (
-        "description",
         "name",
+        "description",
     )
 
 

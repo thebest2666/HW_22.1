@@ -1,5 +1,4 @@
-from itertools import product
-
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
@@ -14,7 +13,7 @@ from django.views.generic import (
 )
 
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
 
 
@@ -83,6 +82,22 @@ class CatalogUpdateView(LoginRequiredMixin, UpdateView):
             return self.render_to_response(
                 self.get_context_data(form=form, formset=formset)
             )
+
+
+    def get_form_class(self):
+        user = self.request.user
+        moderator_permissions = [
+            user.has_perm("catalog.set_published"),
+            user.has_perm("catalog.edit_description"),
+            user.has_perm("catalog.change_category_product")
+        ]
+        if self.object.creator == user:
+            return ProductForm
+        if all(moderator_permissions):
+            return ProductModeratorForm
+        raise PermissionDenied
+
+
 
 
 class CatalogListView(ListView):

@@ -92,6 +92,11 @@ class Product(models.Model):
         verbose_name = "Продукт"
         verbose_name_plural = "Продукты"
         ordering = ["name", "created_at"]
+        permissions = [
+            ('set_published', 'Can publish product'),
+            ('edit_description', 'Can edit description'),
+            ('change_category_product', 'Can change category of product')
+        ]
 
     def __str__(self):
         return self.name
