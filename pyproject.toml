@@ -16,6 +16,8 @@ black = "^24.10.0"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "^8.0.0"}
 django-countries = "^7.6.1"
 django = "4.2.2"
+redis = "^5.1.1"
+python-dotenv = "^1.0.1"
 
 
 [build-system]

@@ -1,7 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -14,7 +14,8 @@ from django.views.generic import (
 
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
+from catalog.services import get_categories
 
 
 class CatalogCreateView(LoginRequiredMixin, CreateView):
@@ -104,11 +105,16 @@ class CatalogListView(ListView):
     model = Product
 
     def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(is_published=True)
+        category_id = self.request.GET.get('category_id')
+        data = super().get_queryset().order_by('-created_at')
+        if category_id:
+            data = data.filter(category_id=category_id).order_by('-created_at')
+            return data
+        queryset = data.filter(is_published=True)
         return queryset
 
     def get_context_data(self, **kwargs):
+        category_id = self.request.GET.get('category_id')
         data = super().get_context_data()
         data["object_list"] = [
             {
@@ -119,6 +125,8 @@ class CatalogListView(ListView):
             }
             for item in data["object_list"]
         ]
+        data['categories'] = get_categories()
+        data['category'] = get_object_or_404(Category, id=category_id) if category_id else None
         return data
 
 
